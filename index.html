@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salon Zaz Look - Expérience 3D Premium</title>
+    <title>Salon Zaz Look - Premium 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* Fond et thème sombre avec dégradé radial */
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%);
@@ -18,7 +17,7 @@
 
         .serif { font-family: 'Playfair Display', serif; }
 
-        /* --- Animations Clés --- */
+        /* Animations */
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
@@ -31,7 +30,7 @@
 
         @keyframes pulse-subtle {
             0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
+            50% { transform: scale(1.03); opacity: 0.9; }
         }
 
         @keyframes icon-bounce {
@@ -39,12 +38,6 @@
             50% { transform: translateY(-3px); }
         }
 
-        @keyframes shine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        /* --- Classes d'Animation --- */
         .animate-float { animation: float 4s ease-in-out infinite; }
         
         .animate-text-shimmer {
@@ -59,7 +52,6 @@
         .icon-pulse { animation: pulse-subtle 3s ease-in-out infinite; }
         .icon-bounce { animation: icon-bounce 2s ease-in-out infinite; }
         
-        /* Design des cartes en verre 3D (Glassmorphism) */
         .glass-3d {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(12px);
@@ -70,30 +62,12 @@
             overflow: hidden;
         }
 
-        .glass-3d::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05), transparent);
-            transform: skewX(-25deg);
-            transition: 0.75s;
-        }
-
-        .glass-3d:hover::after {
-            left: 150%;
-        }
-
         .glass-3d:hover {
-            transform: translateY(-5px) scale(1.02) rotateX(4deg);
+            transform: translateY(-5px) scale(1.02);
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(212, 175, 55, 0.4);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
         }
 
-        /* Boîtes d'icônes compactes et animées */
         .icon-box {
             display: flex;
             align-items: center;
@@ -102,7 +76,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             overflow: hidden;
-            background: white; /* Fond par défaut pour les images */
+            background: white;
         }
         
         .glass-3d:hover .icon-box { 
@@ -111,9 +85,93 @@
 
         .insta-gradient { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
         .wa-color { background: #25D366; }
+
+        /* Modal Styles */
+        #wifi-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #wifi-modal.show { display: flex; }
+
+        .modal-content {
+            background: rgba(25, 25, 25, 0.98);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 35px;
+            padding: 25px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
+        }
+
+        /* Toast Styles */
+        #copy-toast {
+            visibility: hidden;
+            background-color: #d4af37;
+            color: #000;
+            text-align: center;
+            border-radius: 20px;
+            padding: 5px 15px;
+            position: fixed;
+            z-index: 300;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        #copy-toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 1.5s;
+        }
+
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-2">
+
+    <div id="copy-toast">Copié !</div>
+
+    <!-- WiFi Modal Overlay -->
+    <div id="wifi-modal" onclick="closeModal(event)">
+        <div class="modal-content glass-3d" onclick="event.stopPropagation()">
+            <div class="w-14 h-14 icon-box bg-gradient-to-br from-blue-400 to-blue-700 text-white mx-auto mb-4 icon-pulse">
+                <i data-lucide="wifi" class="w-7 h-7"></i>
+            </div>
+            <h2 class="serif text-xl text-[#d4af37] mb-1 uppercase tracking-widest text-center">WiFi Gratuit</h2>
+            <p class="text-gray-400 text-[10px] mb-5 font-medium text-center italic">Service Salon Zaz Look</p>
+            
+            <div class="space-y-4">
+                <!-- Nom du Réseau -->
+                <div class="bg-white/5 rounded-2xl p-3 border border-white/5">
+                    <p class="text-[9px] text-gray-500 uppercase tracking-tighter mb-1 font-bold text-center">Nom du réseau</p>
+                    <p class="text-lg font-bold tracking-widest text-white text-center">BESTONE</p>
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="bg-black/40 rounded-2xl p-4 border border-blue-500/20 group active:scale-95 transition-transform cursor-pointer relative overflow-hidden" onclick="copyWiFiPassword()">
+                    <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <p class="text-[9px] text-gray-500 uppercase tracking-tighter mb-1 font-bold text-center">Mot de passe</p>
+                    <p id="password-text" class="text-xl font-bold tracking-widest text-white text-center">Zazlook2020@</p>
+                    <p class="text-[8px] text-[#d4af37] mt-2 font-bold uppercase italic animate-pulse text-center">Cliquer pour copier</p>
+                </div>
+            </div>
+
+            <button onclick="closeModal(event)" class="w-full mt-6 py-3 rounded-full bg-white/5 border border-white/10 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
+                Fermer
+            </button>
+        </div>
+    </div>
 
     <div class="w-full max-w-sm py-2">
         <!-- En-tête compact -->
@@ -129,35 +187,28 @@
                 <div class="absolute bottom-0 right-0 bg-green-500 w-4 h-4 rounded-full border-2 border-[#0a0a0a] shadow-lg animate-pulse"></div>
             </div>
             
-            <div class="mt-3 flex justify-center overflow-hidden px-1">
-                <h1 class="serif text-2xl sm:text-3xl animate-text-shimmer tracking-widest uppercase leading-tight whitespace-nowrap drop-shadow-lg">
+            <div class="mt-3 flex justify-center overflow-hidden px-1 text-center">
+                <h1 class="serif text-2xl sm:text-3xl animate-text-shimmer tracking-widest uppercase leading-tight whitespace-nowrap drop-shadow-lg text-center">
                     SALON ZAZ LOOK
                 </h1>
             </div>
-            <p class="text-gray-400 text-[9px] mt-1 uppercase tracking-[0.4em] font-light italic">L'Art de la Beauté Femme</p>
+            <p class="text-gray-400 text-[9px] mt-1 uppercase tracking-[0.4em] font-light italic text-center">L'Art de la Beauté Femme</p>
         </div>
 
-        <!-- Grille compacte -->
+        <!-- Grille de liens -->
         <div class="grid grid-cols-2 gap-3 px-1">
             
             <!-- WhatsApp Simo -->
-            <a href="https://wa.me/212638753803" target="_blank" class="glass-3d aspect-square flex flex-col items-center justify-center p-3 rounded-[1.8rem] group border-[#25D366]/20 text-center">
-                <div class="w-11 h-11 icon-box wa-color text-white mb-2 icon-pulse">
+            <a href="https://wa.me/212638753803" target="_blank" class="col-span-2 glass-3d flex items-center p-4 rounded-[1.8rem] group border-[#25D366]/20">
+                <div class="w-11 h-11 icon-box wa-color text-white shadow-lg icon-pulse">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                     </svg>
                 </div>
-                <span class="block font-bold text-[11px] text-white">WhatsApp<br>Simo</span>
-            </a>
-
-            <!-- WhatsApp Yasser -->
-            <a href="https://wa.me/212691382680" target="_blank" class="glass-3d aspect-square flex flex-col items-center justify-center p-3 rounded-[1.8rem] group border-[#25D366]/20 text-center">
-                <div class="w-11 h-11 icon-box wa-color text-white mb-2 icon-pulse">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                    </svg>
+                <div class="ml-4 text-left">
+                    <span class="block font-bold text-sm text-white">WhatsApp Simo</span>
+                    <span class="text-[9px] text-green-300 uppercase tracking-widest font-semibold italic">Contact direct</span>
                 </div>
-                <span class="block font-bold text-[11px] text-white">WhatsApp<br>Yasser</span>
             </a>
 
             <!-- Tarifs Esthétique -->
@@ -178,14 +229,15 @@
 
             <!-- Waze -->
             <a href="https://waze.com/ul/hevfwcysr8" target="_blank" class="glass-3d aspect-square flex flex-col items-center justify-center p-3 rounded-[1.8rem] group border-cyan-500/20 text-center">
-                <div class="w-11 h-11 icon-box border border-cyan-500/20 mb-2 icon-bounce">
+                <div class="w-11 h-11 icon-box bg-white border border-cyan-500/20 mb-2 icon-bounce">
                     <img src="https://i.postimg.cc/yNsY14wP/IMG-9071.png" alt="Waze" class="w-full h-full object-cover">
                 </div>
                 <span class="font-bold text-[11px] text-white tracking-wide">Waze</span>
             </a>
 
             <!-- Avis Google -->
-            <a href="https://www.google.com/search?..." target="_blank" class="glass-3d aspect-square flex flex-col items-center justify-center p-3 rounded-[1.8rem] group border-yellow-500/20 text-center">
+            <a href="https://www.google.com/search?client=safari&hs=LkB&sca_esv=a598d55f83047397&hl=fr-ma&q=avis+sur+salon+zaz+look&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOR58J2hRZzFqT8cAxDaIUjqnQ2EbRVKudyKoa0t2Vg4xz-Jw3QMulE-CZLGj15VaZUo6kHtzsCrE2HlPxKdmrmlT-1Qg&ictx=1" 
+               target="_blank" class="glass-3d aspect-square flex flex-col items-center justify-center p-3 rounded-[1.8rem] group border-yellow-500/20 text-center">
                 <div class="w-11 h-11 icon-box border border-yellow-500/20 mb-2 icon-bounce">
                     <img src="https://i.postimg.cc/HWqmW1Mp/IMG-9067.jpg" alt="Avis Google" class="w-full h-full object-cover">
                 </div>
@@ -201,24 +253,29 @@
             </a>
 
             <!-- WiFi Gratuit -->
-            <div class="glass-3d aspect-square flex flex-col items-center justify-center p-3 rounded-[1.8rem] group text-center cursor-default">
+            <div onclick="openModal()" class="glass-3d aspect-square flex flex-col items-center justify-center p-3 rounded-[1.8rem] group text-center cursor-pointer">
                 <div class="w-11 h-11 icon-box bg-gradient-to-br from-blue-400 to-blue-700 text-white mb-2 icon-pulse">
                     <i data-lucide="wifi" class="w-6 h-6"></i>
                 </div>
-                <span class="font-bold text-[11px]">WiFi Gratuit</span>
+                <span class="font-bold text-[11px] text-white uppercase leading-tight">WiFi Gratuit</span>
             </div>
 
         </div>
 
-        <!-- Pied de page compact -->
+        <!-- Pied de page -->
         <div class="mt-6 text-center">
             <div class="h-[1px] w-1/5 bg-gradient-to-r from-transparent via-gray-700 to-transparent mx-auto mb-3"></div>
-            <p class="text-gray-600 text-[8px] tracking-[0.4em] uppercase font-bold">Salon Zaz Look • 2026</p>
+            <p class="text-gray-600 text-[8px] tracking-[0.4em] uppercase font-bold text-center">Salon Zaz Look • Casablanca • 2026</p>
         </div>
     </div>
 
+    <!-- Hidden textarea for copying -->
+    <textarea id="temp-copy" style="position:absolute; left:-9999px; top:0;"></textarea>
+
     <script>
         lucide.createIcons();
+        
+        // 3D Parallax effect
         document.addEventListener('mousemove', (e) => {
             const cards = document.querySelectorAll('.glass-3d');
             const x = (window.innerWidth / 2 - e.pageX) / 75;
@@ -227,6 +284,28 @@
                 card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
             });
         });
+
+        // WiFi Modal Controls
+        function openModal() {
+            document.getElementById("wifi-modal").classList.add("show");
+        }
+
+        function closeModal(e) {
+            document.getElementById("wifi-modal").classList.remove("show");
+        }
+
+        // Copy Password Function
+        function copyWiFiPassword() {
+            const password = "Zazlook2020@";
+            const textArea = document.getElementById("temp-copy");
+            textArea.value = password;
+            textArea.select();
+            document.execCommand('copy');
+            
+            const toast = document.getElementById("copy-toast");
+            toast.classList.add("show");
+            setTimeout(() => { toast.classList.remove("show"); }, 2000);
+        }
     </script>
 </body>
 </html>
